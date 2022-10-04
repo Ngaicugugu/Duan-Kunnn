@@ -4,8 +4,10 @@
  */
 package Utils;
 
+import Entity.nhanvien;
+
 public class Auth {
-    public static NhanVien user = null;
+    public static nhanvien user = null;
     public static void clear()
     {
         Auth.user = null;
@@ -17,6 +19,6 @@ public class Auth {
     }
     public static boolean isManager()
     {
-        return Auth.isLogin() && user.getVaiTro();
+        return Auth.isLogin() && user.isVaiTro();
     }
 }

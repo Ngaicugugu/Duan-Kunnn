@@ -1,55 +1,48 @@
 package GUI;
 
+import DAO.NhanVienDAO;
+import Entity.nhanvien;
 import Utils.Auth;
 import Utils.MsgBox;
 import Utils.XImage;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
-
 public class DangNhapJDialog extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DangNhapJDialog
-     */
-    
     public DangNhapJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         init();
     }
-//    NhanVienDAO dao = new NhanVienDAO();
- void init(){
- setLocationRelativeTo(null);
- this.setIconImage(XImage.getAppIcon());
- }
-                void login() 
-                {
-                        String manv = txtUser.getText();
-                        String matKhau = new String(txtPass.getPassword());
-                        NhanVien nhanvien = dao.selectByid(manv);
-                        if(nhanvien ==null)
-                        {
-                            MsgBox.alert(this,"Sai tên đăng nhập");
-                            
-                        }else if(!matKhau.equals(nhanvien.getmatKhau()))
-                        {
-                            MsgBox.alert(this,"Sai mật khẩu");
-                        }else
-                        {
-                            Auth.user=nhanvien;
-                            this.dispose();
-                        }
-                }
-                void exit()
-                {
-                if(MsgBox.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không?")){
-                System.exit(0);
+    NhanVienDAO dao = new NhanVienDAO();
 
-                }
- }
-    
-    
+    void init() {
+        setLocationRelativeTo(null);
+        this.setIconImage(XImage.getAppIcon());
+    }
+
+    void login() {
+        String manv = txtUser.getText();
+        String matKhau = new String(txtPass.getPassword());
+        nhanvien nhanvien = dao.findById(manv);
+        if (nhanvien == null) {
+            MsgBox.alert(this, "Sai tên đăng nhập");
+
+        } else if (!matKhau.equals(nhanvien.getMatKhau())) {
+            MsgBox.alert(this, "Sai mật khẩu");
+        } else {
+            Auth.user = nhanvien;
+            this.dispose();
+        }
+    }
+
+    void exit() {
+        if (MsgBox.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không?")) {
+            System.exit(0);
+
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -141,8 +134,8 @@ public class DangNhapJDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     private void btnEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndActionPerformed
         exit();
     }//GEN-LAST:event_btnEndActionPerformed
