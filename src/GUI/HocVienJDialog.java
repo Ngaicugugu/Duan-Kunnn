@@ -5,10 +5,7 @@
  */
 package GUI;
 
-/**
- *
- * @author phuong
- */
+
 public class HocVienJDialog extends javax.swing.JDialog {
 
     /**

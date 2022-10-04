@@ -5,10 +5,7 @@
  */
 package GUI;
 
-/**
- *
- * @author phuong
- */
+
 public class KhoaHocJDialog extends javax.swing.JDialog {
 
     /**

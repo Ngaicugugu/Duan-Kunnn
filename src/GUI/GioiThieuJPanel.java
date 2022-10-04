@@ -5,10 +5,7 @@
  */
 package GUI;
 
-/**
- *
- * @author phuong
- */
+
 public class GioiThieuJPanel extends javax.swing.JPanel {
 
     /**

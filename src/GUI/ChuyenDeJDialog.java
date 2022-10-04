@@ -5,10 +5,6 @@
  */
 package GUI;
 
-/**
- *
- * @author phuong
- */
 public class ChuyenDeJDialog extends javax.swing.JDialog {
 
     /**

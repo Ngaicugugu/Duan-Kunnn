@@ -7,15 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author phuong
- */
+
 public class ChaoJDialog extends javax.swing.JDialog {
 
     /**
@@ -24,15 +16,8 @@ public class ChaoJDialog extends javax.swing.JDialog {
     public ChaoJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         Timer t = new Timer(10, new ActionListener() {
-=======
-        Timer t = new Timer(20, new ActionListener() {
->>>>>>> Stashed changes
-=======
-        Timer t = new Timer(20, new ActionListener() {
->>>>>>> Stashed changes
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 int value = prgBar.getValue();

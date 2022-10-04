@@ -5,10 +5,7 @@
  */
 package GUI;
 
-/**
- *
- * @author phuong
- */
+
 public class NguoiHocJDialog extends javax.swing.JDialog {
 
     /**

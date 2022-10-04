@@ -1,6 +1,8 @@
 package GUI;
 
 
+import Utils.Auth;
+import Utils.MsgBox;
 import Utils.XImage;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -14,48 +16,38 @@ import javax.swing.Timer;
 import jdk.javadoc.internal.tool.Start;
 import sun.java2d.pipe.SpanShapeRenderer;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author phuong
- */
+
+ 
 public class MainFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainFrame
-     */
     public MainFrame() {
         initComponents();
-<<<<<<< Updated upstream
-=======
-      
-        init();
-         
->>>>>>> Stashed changes
+        init();    
     }
           void init() {
-            setSize(1000, 600);
-            setIconImage(ShareHelper.APP_ICON);
-            setLocationRelativeTo(null);
-
-            new Timer(1000, new ActionListener() {
-            SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss a");
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            lblTime.setText(format.format(new Date()));
-            }
-            }).start();
-            this.openWelcome();
-            this.openLogin();
-            
+              setIconImage(XImage.getAppIcon());
+              setSize(1000,600);
+              setLocationRelativeTo(null);
+              
+              new ChaoJDialog(this,true).setVisible(true);
+              new DangNhapJDialog(this,true).setVisible(true);
+            this.startDongHo();
  }
+          void startDongHo()
+          {
+               SimpleDateFormat fmFormat = new SimpleDateFormat("hh:mm:ss a");
+               new Timer(1000,(ActionEvent e) -> {
+                     lblTime.setText(fmFormat.format(new Date()));
+               }).start();
+          }
           void openLogin()
           {
             new DangNhapJDialog(this, true).setVisible(true);
+          }
+          void openLogout()
+          {
+              Auth.clear();
+              new DangNhapJDialog(this,true).setVisible(true);
           }
           void openWelcome()
           {
@@ -63,63 +55,82 @@ public class MainFrame extends javax.swing.JFrame {
           }
           void openThongKe(boolean index)
           {
-            if(ShareHelper.authenticated()){
-            new ThongKeJDialog(this,index).setVisible(true);
+            if(Auth.isLogin())
+            {
+                if(index ==3 && !Auth.isManager())
+                {
+                    MsgBox.alert(this,"Bạn không có quyền xem thông tin danh thu");
+                }else{
+                    ThongKeJDialog tkwin = new ThongKeJDialog(this,true);
+                    tkwin.setVisible(true);
+                    tkwin.selectTab(index);
+                }
             }
             else{
-            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+                MsgBox.alert(this,"vui lòng đăng nhập");
             }
             
           }
           void openNhanVien(){
-            if(ShareHelper.authenticated()){
+            if(Auth.isLogin()){
             new NhanVienJDialog(this,true).setVisible(true);
             }
             else{
-            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
             }
             
             }
           void openKhoaHoc()
           {
-            if(ShareHelper.authenticated()){
+            if(Auth.isLogin()){
             new KhoaHocJDialog(this,true).setVisible(true);
             }
             else{
-            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
             }
         }
           void openChuyenDe()
           {
-        if(ShareHelper.authenticated()){
+        if(Auth.isLogin()){
         new ChuyenDeJDialog(this,true).setVisible(true);
         }
         else{
-        DialogHelper.alert(this, "Vui lòng đăng nhập!");
+        MsgBox.alert(this, "Vui lòng đăng nhập!");
         }
          }
         void openNguoiHoc()
         {
-            if(ShareHelper.authenticated()){
+            if(Auth.isLogin()){
             new NguoiHocJDialog(this,true).setVisible(true);
             }
             else{
-            DialogHelper.alert(this, "Vui lòng đăng nhập!");
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
             }
         }
         void openAbout()
         {
             new GioiThieuJDialog(this, true).setVisible(true);
         }
-        void openWebsite()
+        void openHuongDan()
         {
             try {
             Desktop.getDesktop().browse(new File("help/index.html").toURI());
                 } 
             catch (IOException ex) {
-            DialogHelper.alert(this, "Không tìm thấy file hướng dẫn!");
+            MsgBox.alert(this, "Không tìm thấy file hướng dẫn!");
             }
  }
+        void openDoimatkhau()
+        {
+            if(Auth.isLogin())
+            {
+                new DoiMatKhauJDialog(this,true).setVisible(true);
+                
+            }else
+            {
+                MsgBox.alert(this,"vui lòng đăng nhập");
+            }
+        }
           
          
            
@@ -462,24 +473,9 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void init(){
-        this.setLocationRelativeTo(null);
-        this.setIconImage(XImage.getAppIcon());
-        new ChaoJDialog(this,true).setVisible(true);
-        new DangNhapJDialog(this,true).setVisible(true);
-        
-        Timer t=new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Date now=new Date();
-                SimpleDateFormat fmFormat = new SimpleDateFormat("hh:mm:ss a");
-                lblTime.setText(fmFormat.format(now));
-            }   
-        });
-        t.start();
-    }
+    
     private void mnKetThucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnKetThucActionPerformed
-        if(DialogHelper.confirm(this, "Bạn thực sự muốn kết thúc?")){
+        if(MsgBox.confirm(this, "Bạn thực sự muốn kết thúc?")){
             System.exit(0);
         }
     }//GEN-LAST:event_mnKetThucActionPerformed
@@ -493,8 +489,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnDangNhapActionPerformed
 
     private void mnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDangXuatActionPerformed
-            ShareHelper.logoff();
-            this.openLogin();
+          openLogout();
     }//GEN-LAST:event_mnDangXuatActionPerformed
 
     private void mnChuyenDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChuyenDeActionPerformed
@@ -530,14 +525,14 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if(DialogHelper.confirm(this, "Bạn thực sự muốn kết thúc?")){
+        if(MsgBox.confirm(this, "Bạn thực sự muốn kết thúc?")){
             System.exit(0);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-           ShareHelper.logoff();
-            this.openLogin();
+         openLogout();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void lblDaoTaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDaoTaoMouseClicked
@@ -557,11 +552,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnGioiThieuActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       openWebsite();
+      openHuongDan();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void mnHuongDanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnHuongDanActionPerformed
-       openWebsite();
+       openHuongDan();
     }//GEN-LAST:event_mnHuongDanActionPerformed
 
     /**

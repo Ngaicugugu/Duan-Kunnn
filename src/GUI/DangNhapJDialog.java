@@ -1,19 +1,12 @@
 package GUI;
 
+import Utils.Auth;
+import Utils.MsgBox;
 import Utils.XImage;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author phuong
- */
 public class DangNhapJDialog extends javax.swing.JDialog {
 
     /**
@@ -28,35 +21,29 @@ public class DangNhapJDialog extends javax.swing.JDialog {
 //    NhanVienDAO dao = new NhanVienDAO();
  void init(){
  setLocationRelativeTo(null);
+ this.setIconImage(XImage.getAppIcon());
  }
                 void login() 
                 {
-                        String user = txtUser.getText();
+                        String manv = txtUser.getText();
                         String matKhau = new String(txtPass.getPassword());
-                        try {
-                        NhanVien nhanVien = dao.findById(user);
-                        if(nhanVien != null){
-                        String matKhau2 = nhanVien.getMatKhau();
-                        if(matKhau.equals(matKhau2)){
-                        ShareHelper.USER = nhanVien;
-                        DialogHelper.alert(this, "Đăng nhập thành công!");
-                        this.dispose();
-                        }
-                        else{
-                        DialogHelper.alert(this, "Sai mật khẩu!");
-                        }
-                        }
-                        else{
-                        DialogHelper.alert(this, "Sai tên đăng nhập!");
-                        }
-                        } 
-                        catch (Exception e) {
-                        DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+                        NhanVien nhanvien = dao.selectByid(manv);
+                        if(nhanvien ==null)
+                        {
+                            MsgBox.alert(this,"Sai tên đăng nhập");
+                            
+                        }else if(!matKhau.equals(nhanvien.getmatKhau()))
+                        {
+                            MsgBox.alert(this,"Sai mật khẩu");
+                        }else
+                        {
+                            Auth.user=nhanvien;
+                            this.dispose();
                         }
                 }
                 void exit()
                 {
-                if(DialogHelper.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không?")){
+                if(MsgBox.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không?")){
                 System.exit(0);
 
                 }
@@ -154,17 +141,14 @@ public class DangNhapJDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void init(){
-        this.setLocationRelativeTo(null);
-        this.setIconImage(XImage.getAppIcon());
-    }
+    
     
     private void btnEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndActionPerformed
         exit();
     }//GEN-LAST:event_btnEndActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        
+        login();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
