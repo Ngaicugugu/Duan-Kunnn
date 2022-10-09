@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package entity;
 
-import Utils.XDate;
 import java.util.Date;
 
 /**
@@ -12,20 +11,14 @@ import java.util.Date;
  * @author Thinkpad T490
  */
 public class khoahoc {
-
-    private int maKH;
-    private String maCD;
-    private double hocPhi;
-    private int thoiLuong;
-    private Date ngayKG;
-    private String ghiChu;
-    private String maNV;
-    private Date ngayTao = XDate.now();
-
-    @Override
-    public String toString() {
-        return this.maCD + " (" + this.ngayKG + ")";
-    }
+     int maKH;
+     String maCD;
+     String maNV;
+     double hocPhi;
+     int thoiLuong;
+     String ghiChu;
+     Date ngayKG;
+     Date ngayTao;
 
     public int getMaKH() {
         return maKH;
@@ -41,6 +34,14 @@ public class khoahoc {
 
     public void setMaCD(String maCD) {
         this.maCD = maCD;
+    }
+
+    public String getMaNV() {
+        return maNV;
+    }
+
+    public void setMaNV(String maNV) {
+        this.maNV = maNV;
     }
 
     public double getHocPhi() {
@@ -59,14 +60,6 @@ public class khoahoc {
         this.thoiLuong = thoiLuong;
     }
 
-    public Date getNgayKG() {
-        return ngayKG;
-    }
-
-    public void setNgayKG(Date ngayKG) {
-        this.ngayKG = ngayKG;
-    }
-
     public String getGhiChu() {
         return ghiChu;
     }
@@ -75,12 +68,12 @@ public class khoahoc {
         this.ghiChu = ghiChu;
     }
 
-    public String getMaNV() {
-        return maNV;
+    public Date getNgayKG() {
+        return ngayKG;
     }
 
-    public void setMaNV(String maNV) {
-        this.maNV = maNV;
+    public void setNgayKG(Date ngayKG) {
+        this.ngayKG = ngayKG;
     }
 
     public Date getNgayTao() {
@@ -90,5 +83,6 @@ public class khoahoc {
     public void setNgayTao(Date ngayTao) {
         this.ngayTao = ngayTao;
     }
-
+     
+     
 }

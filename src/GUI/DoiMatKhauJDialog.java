@@ -5,11 +5,10 @@
  */
 package GUI;
 
-import DAO.NhanVienDAO;
-import Utils.Auth;
-import Utils.MsgBox;
-import Utils.XImage;
-
+import dao.nhanvienDAO;
+import utils.Auth;
+import utils.MsgBox;
+import utils.ximage;
 
 public class DoiMatKhauJDialog extends javax.swing.JDialog {
 
@@ -20,43 +19,6 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         init();
-    }
-    NhanVienDAO dao= new NhanVienDAO();
-    private void init()
-    {
-        setLocationRelativeTo(null);
-        this.setIconImage(XImage.getAppIcon());
-    }
-    private void doimatkhau()
-    {
-        String manv = txtManv.getText();
-        String matkhau=new String(txtpass.getPassword());
-        String matkhaumoi = new String(txtpassnew.getPassword());
-        String matkhaumoi2=new String(txtpassnew2.getPassword());
-        if(!manv.equalsIgnoreCase(Auth.user.getMaNV()))
-        {
-            MsgBox.alert(this,"Sai tên đăng nhập");
-            
-        }else
-            if(!matkhau.equals(Auth.user.getMatKhau()))
-            {
-                MsgBox.alert(this,"Sai mật khẩu");
-                
-            }else
-                if(!matkhaumoi.equals(matkhaumoi2))
-                {
-                    MsgBox.alert(this,"Xác nhận mật khẩu không đúng");
-                }
-                else 
-                {
-                    Auth.user.setMatKhau(matkhaumoi);
-                    dao.update(Auth.user);
-                    MsgBox.alert(this,"Đổi mật khẩu thành công");
-                }
-    }
-    private void huybo()
-    {
-        this.dispose();
     }
 
     /**
@@ -176,7 +138,7 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
-      huybo();
+        huybo();
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnDongYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDongYActionPerformed
@@ -238,4 +200,35 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtpassnew;
     private javax.swing.JPasswordField txtpassnew2;
     // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        setLocationRelativeTo(null);
+        this.setIconImage(ximage.getAppIcon());
+    }
+    nhanvienDAO dao = new nhanvienDAO();
+
+    private void huybo() {
+        this.dispose();
+    }
+
+    private void doimatkhau() {
+        String manv = txtManv.getText();
+        String matKhau = new String(txtpass.getPassword());
+        String matKhauMoi = new String(txtpassnew.getPassword());
+        String matKhauMoi2 = new String(txtpassnew2.getPassword());
+        if(!manv.equalsIgnoreCase(Auth.user.getMaNV())){
+            MsgBox.alert(this, "Sai tên đăng nhập!");
+        }
+        else if(!matKhau.equals(Auth.user.getMatKhau())){
+            MsgBox.alert(this, "Sai mật khẩu!");
+        }
+        else if(!matKhauMoi.equals(matKhauMoi2)){
+            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
+        }
+        else{
+            Auth.user.setMatKhau(matKhauMoi);
+            dao.update(Auth.user);
+            MsgBox.alert(this, "Đổi mật khẩu thành công!");
+        }
+    }
 }

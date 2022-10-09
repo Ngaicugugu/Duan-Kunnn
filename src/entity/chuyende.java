@@ -2,26 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package entity;
 
 /**
  *
  * @author Thinkpad T490
  */
 public class chuyende {
-
-    private String maCD;
-    private String tenCD;
-    private double hocPhi;
-    private int thoiLuong;
-    private String hinh;
-    private String moTa;
-
+     String maCD;
+     String tenCD;
+     double hocPhi;
+     int thoiLuong;
+     String moTa;
+     String hinh;
+    
     @Override
-    public String toString() {
+    public String toString(){
         return this.tenCD;
     }
-
+    
+    @Override
+    public boolean equals(Object obj){
+        chuyende other=(chuyende) obj;
+        return other.getMaCD().equals(this.getMaCD());
+    }
     public String getMaCD() {
         return maCD;
     }
@@ -54,14 +58,6 @@ public class chuyende {
         this.thoiLuong = thoiLuong;
     }
 
-    public String getHinh() {
-        return hinh;
-    }
-
-    public void setHinh(String hinh) {
-        this.hinh = hinh;
-    }
-
     public String getMoTa() {
         return moTa;
     }
@@ -69,6 +65,14 @@ public class chuyende {
     public void setMoTa(String moTa) {
         this.moTa = moTa;
     }
-    
-    
+
+    public String getHinh() {
+        return hinh;
+    }
+
+    public void setHinh(String hinh) {
+        this.hinh = hinh;
+    }
+     
+     
 }

@@ -1,47 +1,19 @@
 package GUI;
 
-import DAO.NhanVienDAO;
-import Entity.nhanvien;
-import Utils.Auth;
-import Utils.MsgBox;
-import Utils.XImage;
+import dao.nhanvienDAO;
+import entity.nhanvien;
 import java.awt.Color;
 import javax.swing.JOptionPane;
+import utils.Auth;
+import utils.MsgBox;
+import utils.ximage;
 
 public class DangNhapJDialog extends javax.swing.JDialog {
-
+    
     public DangNhapJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         init();
-    }
-    NhanVienDAO dao = new NhanVienDAO();
-
-    void init() {
-        setLocationRelativeTo(null);
-        this.setIconImage(XImage.getAppIcon());
-    }
-
-    void login() {
-        String manv = txtUser.getText();
-        String matKhau = new String(txtPass.getPassword());
-        nhanvien nhanvien = dao.findById(manv);
-        if (nhanvien == null) {
-            MsgBox.alert(this, "Sai tên đăng nhập");
-
-        } else if (!matKhau.equals(nhanvien.getMatKhau())) {
-            MsgBox.alert(this, "Sai mật khẩu");
-        } else {
-            Auth.user = nhanvien;
-            this.dispose();
-        }
-    }
-
-    void exit() {
-        if (MsgBox.confirm(this, "Bạn có muốn thoát khỏi ứng dụng không?")) {
-            System.exit(0);
-
-        }
     }
 
     /**
@@ -137,11 +109,11 @@ public class DangNhapJDialog extends javax.swing.JDialog {
 
 
     private void btnEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndActionPerformed
-        exit();
+        ketthuc();
     }//GEN-LAST:event_btnEndActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        login();
+        dangnhap();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -196,4 +168,31 @@ public class DangNhapJDialog extends javax.swing.JDialog {
     private javax.swing.JPasswordField txtPass;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        setLocationRelativeTo(null);
+        this.setIconImage(ximage.getAppIcon());
+    }
+    
+    nhanvienDAO dao = new nhanvienDAO();
+    
+    private void dangnhap() {
+        String manv=txtUser.getText();
+        String matkhau=new String(txtPass.getPassword());
+        nhanvien nhanvien=dao.selectByid(manv);
+        if(nhanvien==null){
+            MsgBox.alert(this,"Sai tên đăng nhập!");
+        }else if(!matkhau.equals(nhanvien.getMatKhau())){
+            MsgBox.alert(this,"Sai mật khẩu!");
+        }else{
+            Auth.user=nhanvien;
+            this.dispose();
+        }
+          }
+    
+    private void ketthuc() {
+        if (MsgBox.confirm(this, "Bạn muốn kết thúc ứng dụng?")) {
+            System.exit(0);
+        }
+    }
 }

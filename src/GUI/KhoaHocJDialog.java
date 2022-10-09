@@ -5,6 +5,16 @@
  */
 package GUI;
 
+import dao.chuyendeDAO;
+import dao.khoahocDAO;
+import entity.chuyende;
+import entity.khoahoc;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import utils.MsgBox;
+import utils.XDate;
+import utils.ximage;
 
 public class KhoaHocJDialog extends javax.swing.JDialog {
 
@@ -14,6 +24,7 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
     public KhoaHocJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -26,9 +37,12 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         tabs = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblKhoaHoc = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        cboChuyenDe = new javax.swing.JComboBox<>();
+        lblcd = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtHocPhi = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -51,23 +65,53 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
         btnNext = new javax.swing.JButton();
         btnPrev = new javax.swing.JButton();
         btnFirst = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblKhoaHoc = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         cboTenCD = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel2.setText("Chuyên đề");
-
-        cboChuyenDe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboChuyenDe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboChuyenDeActionPerformed(evt);
+        tblKhoaHoc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Mã KH", "Chuyên đề", "thời lượng", "học phí", "khai giảng", "tạo bởi", "ngày tạo"
+            }
+        ));
+        tblKhoaHoc.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblKhoaHocMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblKhoaHocMouseClicked(evt);
             }
         });
+        jScrollPane2.setViewportView(tblKhoaHoc);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabs.addTab("DANH SÁCH", jPanel2);
+
+        jLabel2.setText("Chuyên đề");
 
         jLabel3.setText("Học phí");
 
@@ -158,21 +202,26 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(cboChuyenDe, 0, 239, Short.MAX_VALUE)
                             .addComponent(txtHocPhi)
-                            .addComponent(txtNguoiTao))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(txtNgayKG)
-                            .addComponent(txtThoiLuong)
-                            .addComponent(jLabel8)
-                            .addComponent(txtNgayTao, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
+                            .addComponent(txtNguoiTao)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5)
+                                    .addComponent(lblcd, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(8, 8, 8)))
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(txtThoiLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txtNgayKG, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel7))
+                                .addComponent(txtNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel8))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnThem)
@@ -202,9 +251,11 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cboChuyenDe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNgayKG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNgayKG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblcd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(3, 3, 3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -236,50 +287,10 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
                     .addComponent(btnNext)
                     .addComponent(btnPrev)
                     .addComponent(btnFirst))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         tabs.addTab("CẬP NHẬT", jPanel1);
-
-        tblKhoaHoc.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Mã KH", "Chuyên đề", "thời lượng", "học phí", "khai giảng", "tạo bởi", "ngày tạo"
-            }
-        ));
-        tblKhoaHoc.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblKhoaHocMousePressed(evt);
-            }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblKhoaHocMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tblKhoaHoc);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        tabs.addTab("DANH SÁCH", jPanel2);
 
         jLabel9.setFont(new java.awt.Font("sansserif", 1, 15)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 0, 0));
@@ -337,45 +348,41 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cboChuyenDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboChuyenDeActionPerformed
-        
-    }//GEN-LAST:event_cboChuyenDeActionPerformed
-
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        
+
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        
+
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
-        
+
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnHocVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHocVienActionPerformed
-        
+
 
     }//GEN-LAST:event_btnHocVienActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
-        
+
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        
+
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
-        
+
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
-        
+
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void tblKhoaHocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhoaHocMousePressed
@@ -383,7 +390,7 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_tblKhoaHocMousePressed
 
     private void tblKhoaHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhoaHocMouseClicked
-        
+
     }//GEN-LAST:event_tblKhoaHocMouseClicked
 
     private void cboTenCDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTenCDActionPerformed
@@ -442,7 +449,6 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JComboBox<String> cboChuyenDe;
     private javax.swing.JComboBox<String> cboTenCD;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -457,6 +463,7 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblcd;
     private javax.swing.JTabbedPane tabs;
     private javax.swing.JTable tblKhoaHoc;
     private javax.swing.JTextArea txtGhiChu;
@@ -466,4 +473,83 @@ public class KhoaHocJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtNguoiTao;
     private javax.swing.JTextField txtThoiLuong;
     // End of variables declaration//GEN-END:variables
+    chuyendeDAO cddao = new chuyendeDAO();
+    khoahocDAO dao = new khoahocDAO();
+    int row=-1;
+    
+    private void init() {
+        this.setLocationRelativeTo(null);
+        this.setIconImage(ximage.getAppIcon());
+        this.fillComboBoxChuyenDe();
+        this.updateStatus();
+        this.fillTable();
+    }
+    
+    void setForm(khoahoc kh) {
+        lblcd.setText(kh.getMaCD());
+        txtNgayKG.setText(XDate.toString(kh.getNgayKG()));
+        txtThoiLuong.setText(String.valueOf(kh.getThoiLuong()));
+        txtNguoiTao.setText(kh.getMaNV());
+        txtNgayTao.setText(XDate.toString(kh.getNgayTao()));
+        txtGhiChu.setText(kh.getGhiChu());
+    }
+    
+    private void fillComboBoxChuyenDe() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboTenCD.getModel();
+        model.removeAllElements();
+        List<chuyende> list = cddao.selectAll();
+        for (chuyende cd : list) {
+            model.addElement(cd);
+        }
+    }
+
+    private void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblKhoaHoc.getModel();
+        model.setRowCount(0);
+        try {
+            chuyende chuyenDe = (chuyende) cboTenCD.getSelectedItem();
+            List<khoahoc> list = dao.selectByChuyenDe(chuyenDe.getMaCD());
+            for (khoahoc kh : list) {
+                Object[] row = {
+                    kh.getMaKH(),
+                    kh.getThoiLuong(),
+                    kh.getHocPhi(),
+                    XDate.toString((kh.getNgayKG()), "MM/dd/yyyy"),
+                    kh.getMaNV(),
+                    XDate.toString((kh.getNgayTao()), "MM/dd/yyyy"),};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+    
+    void chonChuyenDe(){
+        chuyende chuyenDe = (chuyende) cboTenCD.getSelectedItem();
+        txtThoiLuong.setText(String.valueOf(chuyenDe.getThoiLuong()));
+        txtHocPhi.setText(String.valueOf(chuyenDe.getHocPhi()));
+        lblcd.setText(chuyenDe.getTenCD());
+        txtGhiChu.setText(chuyenDe.getTenCD());
+        
+        this.fillTable();
+        this.row = -1;
+        this.updateStatus();
+        tabs.setSelectedIndex(1);
+    }
+    
+    void updateStatus() {
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblKhoaHoc.getRowCount()-1);
+        //Trạng thái form
+        lblcd.setEnabled(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        //Trạng thái điều hướng
+        btnFirst.setEnabled(edit&&!first);
+        btnPrev.setEnabled(edit&&!first);
+        btnNext.setEnabled(edit&&!last);
+        btnLast.setEnabled(edit&&!last);
+    }
 }

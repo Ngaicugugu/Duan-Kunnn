@@ -5,6 +5,13 @@
  */
 package GUI;
 
+import dao.nguoihocDAO;
+import entity.nguoihoc;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import utils.Auth;
+import utils.MsgBox;
+import utils.XDate;
 
 public class NguoiHocJDialog extends javax.swing.JDialog {
 
@@ -14,6 +21,7 @@ public class NguoiHocJDialog extends javax.swing.JDialog {
     public NguoiHocJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -348,40 +356,40 @@ public class NguoiHocJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnThemAncestorAdded
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        
+        insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        
+        update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        
+        delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
-        
+        clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
-        
+        last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        
+        next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
-        
+        prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
-        
+        first();
 
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-        
+        this.timKiem();
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void tblNguoiHocMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNguoiHocMouseClicked
@@ -389,7 +397,10 @@ public class NguoiHocJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_tblNguoiHocMouseClicked
 
     private void tblNguoiHocMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNguoiHocMousePressed
-
+        if (evt.getClickCount() == 2) {
+            this.row = tblNguoiHoc.getSelectedRow();
+            this.edit();
+        }
     }//GEN-LAST:event_tblNguoiHocMousePressed
 
     /**
@@ -468,4 +479,152 @@ public class NguoiHocJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtTen;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    nguoihocDAO dao = new nguoihocDAO();
+    int row = -1;
+
+    private void init() {
+        this.setLocationRelativeTo(null);
+
+        this.fillTable();
+        this.row = -1;
+        this.updateStatus();
+    }
+    
+    void edit() {
+        String manv = (String) tblNguoiHoc.getValueAt(this.row, 0);
+        nguoihoc nv = dao.selectByid(manv);
+        this.setForm(nv);
+        tabs.setSelectedIndex(0);
+        this.updateStatus();
+    }
+    
+    void insert() {
+        nguoihoc nh = getForm();
+        try {
+            dao.insert(nh);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void update() {
+        nguoihoc nh = getForm();
+        try {
+            dao.update(nh);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete() {
+        try {
+            String macd = txtMa.getText();
+            dao.delete(macd);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Xóa thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Xóa thất bại!");
+        }
+    }
+
+    void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblNguoiHoc.getModel();
+        model.setRowCount(0);
+        try {
+            String keyword = txtTimKiem.getText();
+            List<nguoihoc> list = dao.selectByKeyword(keyword);
+            for (nguoihoc nh : list) {
+                Object[] row = {nh.getMaNH(), nh.getHoTen(), nh.getNgaySinh(), nh.getGioiTinh(), nh.getSoDT(), nh.getEmail(), nh.getGhiChu(), nh.getMaNV(), nh.getNgayDK()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void clearForm() {
+        nguoihoc nh = new nguoihoc();
+        this.setForm(nh);
+        this.row = 1;
+        this.updateStatus();
+    }
+
+    void setForm(nguoihoc nh) {
+        txtMa.setText(nh.getMaNH());
+        txtDienThoai.setText(nh.getSoDT());
+        txtEmail.setText(nh.getEmail());
+        txtGhiChu.setText(nh.getGhiChu());
+        txtNgaySinh.setText(XDate.toString(nh.getNgaySinh()));
+        txtTen.setText(nh.getHoTen());
+    }
+
+    nguoihoc getForm() {
+        nguoihoc nh = new nguoihoc();
+        nh.setMaNH(txtMa.getText());
+        nh.setEmail(txtEmail.getText());
+        nh.setGhiChu(txtGhiChu.getText());
+        nh.setGioiTinh(cboGioiTinh.getSelectedIndex() == 0 ? false : true);
+        nh.setHoTen(txtTen.getText());
+        nh.setMaNV(Auth.user.getMaNV());
+        nh.setNgaySinh(XDate.toDate(txtNgaySinh.getText()));
+        nh.setSoDT(txtDienThoai.getText());
+        nh.setNgayDK(XDate.now());
+        return nh;
+    }
+
+    private void timKiem() {
+        this.fillTable();
+        this.clearForm();
+        this.row = -1;
+
+    }
+
+    void updateStatus() {
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblNguoiHoc.getRowCount() - 1);
+        //Trạng thái form
+        txtMa.setEditable(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        //Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+
+    void first() {
+        this.row = 0;
+        this.edit();
+    }
+
+    void prev() {
+        if (this.row > 0) {
+            this.row--;
+            this.edit();
+        }
+    }
+
+    void next() {
+        if (this.row < tblNguoiHoc.getRowCount() - 1) {
+            this.row++;
+            this.edit();
+        }
+    }
+
+    void last() {
+        this.row = tblNguoiHoc.getRowCount() - 1;
+        this.edit();
+    }
 }

@@ -2,23 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package entity;
 
 /**
  *
  * @author Thinkpad T490
  */
 public class hocvien {
-
-    private int maHV;
-    private int maKH;
-    private String maNH;
-    private double diem = -1.0;
-
-    @Override
-    public String toString() {
-        return this.toString();
-    }
+     int maHV;
+     String hoTen;
+     String maNH;
+     double diem;
+     int maKH;
 
     public int getMaHV() {
         return maHV;
@@ -28,12 +23,12 @@ public class hocvien {
         this.maHV = maHV;
     }
 
-    public int getMaKH() {
-        return maKH;
+    public String getHoTen() {
+        return hoTen;
     }
 
-    public void setMaKH(int maKH) {
-        this.maKH = maKH;
+    public void setHoTen(String hoTen) {
+        this.hoTen = hoTen;
     }
 
     public String getMaNH() {
@@ -52,4 +47,13 @@ public class hocvien {
         this.diem = diem;
     }
 
+    public int getMaKH() {
+        return maKH;
+    }
+
+    public void setMaKH(int maKH) {
+        this.maKH = maKH;
+    }
+     
+     
 }

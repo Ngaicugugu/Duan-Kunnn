@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Entity;
+package entity;
 
-import Utils.XDate;
 import java.util.Date;
 
 /**
@@ -12,19 +11,15 @@ import java.util.Date;
  * @author Thinkpad T490
  */
 public class nguoihoc {
-    private String maNH;
- private String hoTen;
- private Date ngaySinh;
- private boolean gioiTinh;
- private String dienThoai;
- private String email;
- private String ghiChu;
- private String maNV;
- private Date ngayDK = XDate.now();
- @Override
- public String toString() {
- return this.hoTen;
- }
+     String maNH;
+     String hoTen;
+     Boolean gioiTinh;
+     Date ngaySinh;
+     String soDT;
+     String email;
+     String ghiChu;
+     Date ngayDK ;
+     String maNV;
 
     public String getMaNH() {
         return maNH;
@@ -42,6 +37,14 @@ public class nguoihoc {
         this.hoTen = hoTen;
     }
 
+    public Boolean getGioiTinh() {
+        return gioiTinh;
+    }
+
+    public void setGioiTinh(Boolean gioiTinh) {
+        this.gioiTinh = gioiTinh;
+    }
+
     public Date getNgaySinh() {
         return ngaySinh;
     }
@@ -50,20 +53,12 @@ public class nguoihoc {
         this.ngaySinh = ngaySinh;
     }
 
-    public boolean isGioiTinh() {
-        return gioiTinh;
+    public String getSoDT() {
+        return soDT;
     }
 
-    public void setGioiTinh(boolean gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
-
-    public String getDienThoai() {
-        return dienThoai;
-    }
-
-    public void setDienThoai(String dienThoai) {
-        this.dienThoai = dienThoai;
+    public void setSoDT(String soDT) {
+        this.soDT = soDT;
     }
 
     public String getEmail() {
@@ -82,14 +77,6 @@ public class nguoihoc {
         this.ghiChu = ghiChu;
     }
 
-    public String getMaNV() {
-        return maNV;
-    }
-
-    public void setMaNV(String maNV) {
-        this.maNV = maNV;
-    }
-
     public Date getNgayDK() {
         return ngayDK;
     }
@@ -98,5 +85,13 @@ public class nguoihoc {
         this.ngayDK = ngayDK;
     }
 
- 
+    public String getMaNV() {
+        return maNV;
+    }
+
+    public void setMaNV(String maNV) {
+        this.maNV = maNV;
+    }
+     
+     
 }

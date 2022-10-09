@@ -5,6 +5,17 @@
  */
 package GUI;
 
+import dao.chuyendeDAO;
+import entity.chuyende;
+import java.io.File;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+import utils.Auth;
+import utils.MsgBox;
+import utils.ximage;
+
 public class ChuyenDeJDialog extends javax.swing.JDialog {
 
     /**
@@ -13,6 +24,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
     public ChuyenDeJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        init();
     }
 
     /**
@@ -24,6 +36,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fileChooser = new javax.swing.JFileChooser();
         jLabel1 = new javax.swing.JLabel();
         tabs = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -76,7 +89,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblHinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(17, 17, 17))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +250,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
                     .addComponent(btnNext)
                     .addComponent(btnPrev)
                     .addComponent(btnFirst))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabs.addTab("CẬP NHẬT", jPanel1);
@@ -269,13 +282,13 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -300,55 +313,58 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabs))
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblHinhMouseClicked
-        
+        chonAnh();
 
     }//GEN-LAST:event_lblHinhMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        
+        insert();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-       
+        update();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        
+        delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
-        
+        clearForm();
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
-        
+        last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        
+        next();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevActionPerformed
-        
+        prev();
     }//GEN-LAST:event_btnPrevActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
-        
+        first();
     }//GEN-LAST:event_btnFirstActionPerformed
 
     private void tblChuyenDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChuyenDeMouseClicked
-        
+
     }//GEN-LAST:event_tblChuyenDeMouseClicked
 
     private void tblChuyenDeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChuyenDeMousePressed
-
+        if(evt.getClickCount()==2){
+            this.row = tblChuyenDe.getSelectedRow();
+            this.edit();
+        }
     }//GEN-LAST:event_tblChuyenDeMousePressed
 
     /**
@@ -402,6 +418,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -423,4 +440,153 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtTen;
     private javax.swing.JTextField txtThoiLuong;
     // End of variables declaration//GEN-END:variables
+    chuyendeDAO dao = new chuyendeDAO();
+    int row = -1;
+
+    private void init() {
+        this.setLocationRelativeTo(null);
+        this.setIconImage(ximage.getAppIcon());
+
+        this.fillTable();
+        this.updateStatus();
+    }
+
+    chuyende getForm() {
+        chuyende cd = new chuyende();
+        cd.setMaCD(txtMa.getText());
+        cd.setTenCD(txtTen.getText());
+        cd.setThoiLuong(Integer.valueOf(txtThoiLuong.getText()));
+        cd.setHocPhi(Float.valueOf(txtHocPhi.getText()));
+        cd.setMoTa(txtMoTa.getText());
+        cd.setHinh(lblHinh.getToolTipText());
+        return cd;
+    }
+
+    void setForm(chuyende cd) {
+        txtMa.setText(cd.getMaCD());
+        txtTen.setText(cd.getTenCD());
+        txtThoiLuong.setText(String.valueOf(cd.getThoiLuong()));
+        txtHocPhi.setText(String.valueOf(cd.getHocPhi()));
+        txtMoTa.setText(cd.getMoTa());
+        if (cd.getHinh() != null) {
+            lblHinh.setToolTipText(cd.getHinh());
+            lblHinh.setIcon(ximage.read(cd.getHinh()));
+        }
+    }
+
+    void chonAnh() {
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            ximage.save(file);
+            ImageIcon icon = ximage.read(file.getName());
+            lblHinh.setIcon(icon);
+            lblHinh.setToolTipText(file.getName());
+        }
+    }
+
+    private void fillTable() {
+        DefaultTableModel model = (DefaultTableModel) tblChuyenDe.getModel();
+        model.setRowCount(0);
+        try {
+            List<chuyende> list = dao.selectAll();
+            for (chuyende cd : list) {
+                Object[] row = {cd.getMaCD(), cd.getTenCD(), cd.getHocPhi(), cd.getThoiLuong(), cd.getHinh(), cd.getMoTa()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    private void updateStatus() {
+        boolean edit = (this.row >= 0);
+        boolean first = (this.row == 0);
+        boolean last = (this.row == tblChuyenDe.getRowCount() - 1);
+        //Trạng thái form
+        txtMa.setEditable(!edit);
+        btnThem.setEnabled(!edit);
+        btnSua.setEnabled(edit);
+        btnXoa.setEnabled(edit);
+        //Trạng thái điều hướng
+        btnFirst.setEnabled(edit && !first);
+        btnPrev.setEnabled(edit && !first);
+        btnNext.setEnabled(edit && !last);
+        btnLast.setEnabled(edit && !last);
+    }
+
+    void insert() {
+        chuyende cd = getForm();
+        try {
+            dao.insert(cd);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void update() {
+        chuyende cd = getForm();
+        try {
+            dao.update(cd);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete() {
+        try {
+            String macd = txtMa.getText();
+            dao.delete(macd);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Xóa thành công!");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Xóa thất bại!");
+        }
+    }
+
+    void clearForm() {
+        chuyende cd = new chuyende();
+        this.setForm(cd);
+        this.row = 1;
+        this.updateStatus();
+    }
+
+    void edit() {
+        String manv = (String) tblChuyenDe.getValueAt(this.row, 0);
+        chuyende cd = dao.selectByid(manv);
+        this.setForm(cd);
+        tabs.setSelectedIndex(0);
+        this.updateStatus();
+    }
+
+    void first() {
+        this.row = 0;
+        this.edit();
+    }
+
+    void prev() {
+        if (this.row > 0) {
+            this.row--;
+            this.edit();
+        }
+    }
+
+    void next() {
+        if (this.row < tblChuyenDe.getRowCount() - 1) {
+            this.row++;
+            this.edit();
+        }
+    }
+
+    void last() {
+        this.row = tblChuyenDe.getRowCount() - 1;
+        this.edit();
+    }
 }

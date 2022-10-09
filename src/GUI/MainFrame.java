@@ -1,8 +1,5 @@
 package GUI;
 
-import Utils.Auth;
-import Utils.MsgBox;
-import Utils.XImage;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import jdk.javadoc.internal.tool.Start;
 import sun.java2d.pipe.SpanShapeRenderer;
+import utils.Auth;
+import utils.MsgBox;
+import utils.ximage;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -22,103 +22,11 @@ public class MainFrame extends javax.swing.JFrame {
         init();
     }
 
-    void init() {
-        setIconImage(XImage.getAppIcon());
-        setSize(1000, 600);
-        setLocationRelativeTo(null);
-
-        new ChaoJDialog(this, true).setVisible(true);
-        new DangNhapJDialog(this, true).setVisible(true);
-        this.startDongHo();
-    }
-
     void startDongHo() {
         SimpleDateFormat fmFormat = new SimpleDateFormat("hh:mm:ss a");
         new Timer(1000, (ActionEvent e) -> {
             lblTime.setText(fmFormat.format(new Date()));
         }).start();
-    }
-
-    void openLogin() {
-        new DangNhapJDialog(this, true).setVisible(true);
-    }
-
-    void openLogout() {
-        Auth.clear();
-        new DangNhapJDialog(this, true).setVisible(true);
-    }
-
-    void openWelcome() {
-        new ChaoJDialog(this, true).setVisible(true);
-    }
-
-    void openThongKe(int index) {
-        if (Auth.isLogin()) {
-            if (index == 3 && !Auth.isManager()) {
-                MsgBox.alert(this, "Bạn không có quyền xem thông tin danh thu");
-            } else {
-                ThongKeJDialog tkwin = new ThongKeJDialog(this, true);
-                tkwin.setVisible(true);
-                tkwin.selectTab(index);
-            }
-        } else {
-            MsgBox.alert(this, "vui lòng đăng nhập");
-        }
-
-    }
-
-    void openNhanVien() {
-        if (Auth.isLogin()) {
-            new NhanVienJDialog(this, true).setVisible(true);
-        } else {
-            MsgBox.alert(this, "Vui lòng đăng nhập!");
-        }
-
-    }
-
-    void openKhoaHoc() {
-        if (Auth.isLogin()) {
-            new KhoaHocJDialog(this, true).setVisible(true);
-        } else {
-            MsgBox.alert(this, "Vui lòng đăng nhập!");
-        }
-    }
-
-    void openChuyenDe() {
-        if (Auth.isLogin()) {
-            new ChuyenDeJDialog(this, true).setVisible(true);
-        } else {
-            MsgBox.alert(this, "Vui lòng đăng nhập!");
-        }
-    }
-
-    void openNguoiHoc() {
-        if (Auth.isLogin()) {
-            new NguoiHocJDialog(this, true).setVisible(true);
-        } else {
-            MsgBox.alert(this, "Vui lòng đăng nhập!");
-        }
-    }
-
-    void openAbout() {
-        new GioiThieuJDialog(this, true).setVisible(true);
-    }
-
-    void openHuongDan() {
-        try {
-            Desktop.getDesktop().browse(new File("help/index.html").toURI());
-        } catch (IOException ex) {
-            MsgBox.alert(this, "Không tìm thấy file hướng dẫn!");
-        }
-    }
-
-    void openDoimatkhau() {
-        if (Auth.isLogin()) {
-            new DoiMatKhauJDialog(this, true).setVisible(true);
-
-        } else {
-            MsgBox.alert(this, "vui lòng đăng nhập");
-        }
     }
 
     /**
@@ -316,6 +224,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         mnDoiMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Hinh/Refresh.png"))); // NOI18N
         mnDoiMatKhau.setText("Đổi mật khẩu");
+        mnDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnDoiMatKhauActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnDoiMatKhau);
         jMenu1.add(jSeparator2);
 
@@ -461,89 +374,89 @@ public class MainFrame extends javax.swing.JFrame {
 
 
     private void mnKetThucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnKetThucActionPerformed
-        if (MsgBox.confirm(this, "Bạn thực sự muốn kết thúc?")) {
-            System.exit(0);
-        }
+        this.ketThuc();
     }//GEN-LAST:event_mnKetThucActionPerformed
 
     private void mnNguoiHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNguoiHocActionPerformed
-        openNguoiHoc();
+        this.openNguoiHoc();
     }//GEN-LAST:event_mnNguoiHocActionPerformed
 
     private void mnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDangNhapActionPerformed
-        openLogin();
+        
     }//GEN-LAST:event_mnDangNhapActionPerformed
 
     private void mnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDangXuatActionPerformed
-        openLogout();
+        this.dangXuat();
     }//GEN-LAST:event_mnDangXuatActionPerformed
 
     private void mnChuyenDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnChuyenDeActionPerformed
-        openChuyenDe();
+        this.openChuyenDe();
     }//GEN-LAST:event_mnChuyenDeActionPerformed
 
     private void mnKhoaHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnKhoaHocActionPerformed
-        openKhoaHoc();
+        this.openKhoaHoc();
     }//GEN-LAST:event_mnKhoaHocActionPerformed
 
     private void mnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNhanVienActionPerformed
-        openNhanVien();
+        this.openNhanVien();
     }//GEN-LAST:event_mnNhanVienActionPerformed
 
     private void mnNguoiHocTungNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnNguoiHocTungNamActionPerformed
-
+        this.openThongKe( 0);
     }//GEN-LAST:event_mnNguoiHocTungNamActionPerformed
 
     private void mnBangDiemKhoaHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnBangDiemKhoaHocActionPerformed
-
+        this.openThongKe(1);
     }//GEN-LAST:event_mnBangDiemKhoaHocActionPerformed
 
     private void mnDiemKhoaHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDiemKhoaHocActionPerformed
-
+         this.openThongKe(2);
     }//GEN-LAST:event_mnDiemKhoaHocActionPerformed
 
     private void mnDoanhThuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDoanhThuActionPerformed
-
+        this.openThongKe(3);
     }//GEN-LAST:event_mnDoanhThuActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+       this.openNguoiHoc();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (MsgBox.confirm(this, "Bạn thực sự muốn kết thúc?")) {
-            System.exit(0);
-        }
+        this.ketThuc();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        openLogout();
+        this.dangXuat();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void lblDaoTaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblDaoTaoMouseClicked
-        openAbout();
+
     }//GEN-LAST:event_lblDaoTaoMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        openKhoaHoc();
+        this.openKhoaHoc();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        openChuyenDe();
+        this.openChuyenDe();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void mnGioiThieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnGioiThieuActionPerformed
-        openAbout();
+        this.openGioiThieu();
     }//GEN-LAST:event_mnGioiThieuActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        openHuongDan();
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void mnHuongDanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnHuongDanActionPerformed
-        openHuongDan();
+        this.openHuongDan();
     }//GEN-LAST:event_mnHuongDanActionPerformed
+
+    private void mnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDoiMatKhauActionPerformed
+        this.openDoiMatKhau();
+    }//GEN-LAST:event_mnDoiMatKhauActionPerformed
 
     /**
      * @param args the command line arguments
@@ -615,4 +528,104 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mnNhanVien;
     private javax.swing.JPopupMenu.Separator spr;
     // End of variables declaration//GEN-END:variables
+
+    private void init() {
+        setIconImage(ximage.getAppIcon());
+        setSize(1000, 600);
+        setLocationRelativeTo(null);
+        new ChaoJDialog(this, true).setVisible(true);
+        new DangNhapJDialog(this, true).setVisible(true);
+        this.startDongHo();
+    }
+    
+    void openDoiMatKhau() {
+        if (Auth.isLogin()) {
+            new DoiMatKhauJDialog(this, true).setVisible(true);
+        } else {
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    void dangXuat() {
+        Auth.clear();
+        new DangNhapJDialog(this, true).setVisible(true);
+    }
+
+    void ketThuc() {
+        if(MsgBox.confirm(this, "Bạn muốn kết thúc làm việc?")){
+            System.exit(0);
+        }
+    }
+
+    void openNhanVien() {
+        if(Auth.isLogin()){
+            new NhanVienJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this, "vui lòng đăng nhập lại!");
+        }
+    }
+
+    void openKhoaHoc() {
+        if(Auth.isLogin()){
+            new KhoaHocJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this, "vui lòng đăng nhập lại!");
+        }
+    }
+
+    void openChuyenDe() {
+        if(Auth.isLogin()){
+            new ChuyenDeJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this, "vui lòng đăng nhập lại!");
+        }
+    }
+
+    void openNguoiHoc() {
+        if(Auth.isLogin()){
+            new NguoiHocJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this, "vui lòng đăng nhập lại!");
+        }
+    }
+
+    void openHocVien() {
+        if(Auth.isLogin()){
+            new NguoiHocJDialog(this, true).setVisible(true);
+        }
+        else{
+            MsgBox.alert(this, "vui lòng đăng nhập lại!");
+        }
+    }
+
+    void openThongKe(int index) {
+        if (Auth.isLogin()) {
+            if (index == 3 && !Auth.isManager()) {
+                MsgBox.alert(this, "Bạn không có quyền xem thông tin doanh thu");
+            } else {
+                ThongKeJDialog tkwin = new ThongKeJDialog(this, true);
+                tkwin.setVisible(true);
+                tkwin.selectTab(index);
+            }
+        }
+        else{
+            MsgBox.alert(this, "Vui lòng đăng nhập!");
+        }
+    }
+
+    void openGioiThieu() {
+       
+    }
+
+    void openHuongDan() {
+        try {
+            Desktop.getDesktop().browse(new File("help/index.html").toURI());
+        } catch (Exception e) {
+            MsgBox.alert(this, "không tìm thấy file hướng dẫn!");
+        }
+    }
 }
