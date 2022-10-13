@@ -313,7 +313,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE))
+                .addComponent(tabs))
         );
 
         pack();
@@ -490,7 +490,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
         try {
             List<chuyende> list = dao.selectAll();
             for (chuyende cd : list) {
-                Object[] row = {cd.getMaCD(), cd.getTenCD(), cd.getHocPhi(), cd.getThoiLuong(), cd.getHinh(), cd.getMoTa()
+                Object[] row = {cd.getMaCD(), cd.getTenCD(), cd.getHocPhi(), cd.getThoiLuong(), cd.getMoTa(),cd.getHinh()
                 };
                 model.addRow(row);
             }
@@ -524,6 +524,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
             MsgBox.alert(this, "Thêm mới thành công!");
         } catch (Exception e) {
             MsgBox.alert(this, "Thêm mới thất bại!");
+            e.printStackTrace();
         }
     }
 
@@ -536,6 +537,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
             MsgBox.alert(this, "Cập nhật thành công!");
         } catch (Exception e) {
             MsgBox.alert(this, "Cập nhật thất bại!");
+             e.printStackTrace();
         }
     }
 
@@ -548,6 +550,7 @@ public class ChuyenDeJDialog extends javax.swing.JDialog {
             MsgBox.alert(this, "Xóa thành công!");
         } catch (Exception e) {
             MsgBox.alert(this, "Xóa thất bại!");
+             e.printStackTrace();
         }
     }
 

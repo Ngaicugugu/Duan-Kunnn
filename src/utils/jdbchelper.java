@@ -19,7 +19,7 @@ public class jdbchelper {
     static String dburl = "jdbc:sqlserver://localhost:1433;databaseName=PolyEduSys;"
                 + "encrypt=true;trustServercertificate=true;sslProtocol=TLSv1.2";
     static String user="sa";
-    static String pass="1510";
+    static String pass="123456";
     static{
         try {
             Class.forName(driver);
